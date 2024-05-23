@@ -5,21 +5,29 @@ import { io, Socket } from 'socket.io-client';
   providedIn: 'root'
 })
 export class SocketService {
-  private socket: Socket;
+  private socket!: Socket;
+  connect(): void {
+    this.socket = io(window.location.origin + '/chat');
+    const that = this;
+    this.socket.on('connect', function() {
+      that.socket.emit('joined', {});
+  });
+    }
 
-  constructor() {
-    this.socket = io();
+  emit(event: string, data: any): void {
+    this.socket.emit(event, data);
   }
 
-  joinRoom(room: string): void {
-    this.socket.emit('join', room);
+  on(event: string, callback: Function): void {
+    this.socket.on(event, (data) => {
+      callback(data);
+    });
   }
 
-  sendMessage(room: string, message: any): void { // Changed to `any` since message could be an encrypted object
-    this.socket.emit('message', { room, message });
-  }
-
-  onMessage(callback: (msg: any) => void): void { // Changed to `any` since message could be an encrypted object
-    this.socket.on('message', callback);
+  disconnect(): void {
+    if (this.socket) {
+      this.emit('left', {})
+      this.socket.disconnect();
+    }
   }
 }

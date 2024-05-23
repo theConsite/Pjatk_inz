@@ -1,4 +1,4 @@
 <h1>{{name}}: {{ room }}</h1>
         <p *ngFor="let message of messages">{{message}}</p>
-        <input id="text" size="80" placeholder="Enter your message here" [(ngModel)]="message">
+        <input id="text" size="80" placeholder="Enter your message here" [(ngModel)]="input">
         <button (click)="sendMess($event)">Send</button>
