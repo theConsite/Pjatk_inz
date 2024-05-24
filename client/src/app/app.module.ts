@@ -3,11 +3,12 @@ import { BrowserModule } from '@angular/platform-browser';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
-import { ChatComponent } from './chat/chat.component';
 import { HomeComponent } from './home/home.component';
-import { SocketService } from './socket.service';
 import { HttpClientModule } from '@angular/common/http';
 import { FormsModule } from '@angular/forms';
+import { SocketService } from './services/socket-service/socket.service';
+import { ChatComponent } from './chat/chat.component';
+import { CryptoService } from './services/crypto-service/crypto-service.service';
 
 @NgModule({
   declarations: [
@@ -22,7 +23,8 @@ import { FormsModule } from '@angular/forms';
     FormsModule
   ],
   providers: [
-    SocketService
+    SocketService,
+    CryptoService
   ],
   bootstrap: [AppComponent]
 })
