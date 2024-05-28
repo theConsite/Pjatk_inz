@@ -1,0 +1,32 @@
+#background {
+    position: fixed;
+    width: 100vw;
+    height: 200vh;
+    background: linear-gradient(315deg, #8af2ff, #008ca8);
+    top: 0;
+    left: 0;
+    z-index: -1;
+}
+
+#content {
+    display: flex;
+    padding: 0 5px;
+    flex-direction: column;
+    min-height: 100vh;
+    justify-content: center;
+    padding:  0 5vw;
+}
+
+.card {
+    width: 100%;
+    background-color: white;
+    min-height: 50px;
+    border-radius: 10px;
+    -webkit-box-shadow: 6px 6px 0px -3px rgba(66, 68, 90, 0.3);
+    -moz-box-shadow: 6px 6px 0px -3px rgba(66, 68, 90, 0.3);
+    box-shadow: 6px 6px 0px -3px rgba(66, 68, 90, 0.3);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 20px 0 ;
+}
