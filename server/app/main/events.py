@@ -1,7 +1,8 @@
-from flask import session
+from flask import session, request
 from flask_socketio import emit, join_room, leave_room
 from .. import socketio
 
+clients = {}
 
 @socketio.on('joined', namespace='/chat')
 def joined(message):
@@ -9,6 +10,11 @@ def joined(message):
     A status message is broadcast to all people in the room."""
     room = session.get('room')
     join_room(room)
+    try:
+        clients[room].append(request.sid)
+    except:
+        clients[room] = [request.sid]
+    print(clients)
     emit('status', {'msg': session.get('name') + ' has entered the room.'}, room=room)
 
 
@@ -22,7 +28,10 @@ def text(message):
 @socketio.on('pubKeyEmit', namespace='/chat')
 def keyShare(key):
     room = session.get('room')
-    emit('key', {'name': session.get('name'), 'key': key}, room=room)
+    nextIndex = clients[room].index(request.sid)+1
+    if nextIndex == len(clients[room]):
+        nextIndex = 0 
+    emit('key', {'name': session.get('name'), 'key': key['key'], 'i': key['i'], 'isLast': key['i'] >= len(clients[room])-2, 'isSingleRoom': len(clients[room]) == 1}, to=clients[room][nextIndex])
 
 
 @socketio.on('left', namespace='/chat')
@@ -31,5 +40,7 @@ def left(message):
     A status message is broadcast to all people in the room."""
     room = session.get('room')
     leave_room(room)
+    clients[room].remove(request.sid)
+    print(clients)
     emit('status', {'msg': session.get('name') + ' has left the room.'}, room=room)
 

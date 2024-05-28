@@ -16,7 +16,7 @@ export class ChatComponent implements OnInit, OnDestroy {
   public input: string = '';
   public keyPair: {publicKey: BigInteger, privateKey: BigInteger};
   public sharedSecret: string = '';
-  public keys: string[] = [];
+  public lastSecret: BigInteger | null = null;
 
   @HostListener('window:beforeunload', [ '$event' ])
   beforeUnloadHandler(event: any) {
@@ -37,16 +37,12 @@ export class ChatComponent implements OnInit, OnDestroy {
         });
         this.socket.on('status', (message: any) => {
           this.sharedSecret = '';
-          this.keys = [];
-          this.sendPubKey()
+          this.sendPubKey(this.keyPair.publicKey)
           this.messages.push({name: 'server', msg: message.msg});
         });
         this.socket.on('key', (message: any) => {
-          if(message.name != this.name){
-            this.recievePKey(message.key)
-          }else{
-            console.log('Own key')
-          }
+          console.log(message)
+          this.recievePKey(message)
         });
       },err => {
       }
@@ -54,19 +50,28 @@ export class ChatComponent implements OnInit, OnDestroy {
   }
 
 
-  sendPubKey(){
-    console.log('sendKey')
-    this.socket.emit('pubKeyEmit', this.keyPair.publicKey.toString(16))
+  sendPubKey(key: BigInteger, i=0){
+    this.socket.emit('pubKeyEmit', {key: key.toString(16), i:i})
   }
 
-  recievePKey(key: string){
-    this.keys.push(key)
-    const secrets: BigInteger[] = this.keys.map(publicKey => 
-      this.crypto.computeSecret(publicKey, this.keyPair.privateKey)
-    );
-    console.log(secrets)
-    this.sharedSecret = this.crypto.deriveSharedKey(secrets);
-    console.log(this.sharedSecret)
+  recievePKey(keyData: {key: string, i: number, name: string, isLast: boolean, isSingleRoom: boolean}){
+    if(keyData.isSingleRoom){
+      return;
+    }
+    let secret;
+    if(keyData.i == 0){
+      secret = this.crypto.computeSecret(keyData.key, this.keyPair.privateKey)
+    }else{
+      secret = this.crypto.computeSecret(keyData.key, this.keyPair.privateKey)
+    }
+    this.lastSecret = secret;
+    if(!keyData.isLast){
+      this.sendPubKey(secret, keyData.i+1)
+    }else{
+      this.sharedSecret = this.crypto.deriveSharedKey(secret);
+      console.log(this.sharedSecret)
+    }
+    
   }
 
 

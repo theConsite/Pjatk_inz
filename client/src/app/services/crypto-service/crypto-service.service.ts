@@ -25,10 +25,9 @@ export class CryptoService {
     return { privateKey, publicKey };
   }
 
-  deriveSharedKey(secrets: BigInteger[]): string {
+  deriveSharedKey(secret: BigInteger): string {
     // Concatenate the secrets and hash them to derive the shared key
-    const concatenatedSecrets = secrets.map(secret => secret.toString(16)).join('');
-    return CryptoJS.SHA256(concatenatedSecrets).toString();
+    return CryptoJS.SHA256(secret.toString(16)).toString();
   }
 
   computeSecret(theirPublicKey: string, myPrivateKey: BigInteger) {
