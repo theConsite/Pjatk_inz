@@ -2,7 +2,11 @@
 <div id="content">
 
     <div class="card">
-        <a href="/chat">Chat</a>
+        <input type="text" [(ngModel)]="formData.room" placeholder="Pokój">
+        <input type="text" [(ngModel)]="formData.uName" placeholder="Nazwa użytkownika">
+        <input type="password" [(ngModel)]="formData.pass" placeholder="Hasło(opcjonalne)">
+        <button (click)="fillRandom($event)">Generuj losowe</button>
+        <button (click)="joinChat($event)">Dołącz</button>
     </div>
     <div class="card"></div>
     <div class="card"></div>

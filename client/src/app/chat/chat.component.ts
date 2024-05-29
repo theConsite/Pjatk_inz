@@ -3,6 +3,8 @@ import { Component, HostListener, OnDestroy, OnInit } from '@angular/core';
 import { SocketService } from '../services/socket-service/socket.service';
 import { CryptoService } from '../services/crypto-service/crypto-service.service';
 import { BigInteger } from 'jsbn';
+import { UserData } from '../global-models';
+import * as CryptoJS from 'crypto-js';
 
 @Component({
   selector: 'app-chat',
@@ -10,8 +12,7 @@ import { BigInteger } from 'jsbn';
   styleUrl: './chat.component.css'
 })
 export class ChatComponent implements OnInit, OnDestroy {
-  public room : string = 'test';
-  public name: string = this.makeRandom(10);
+  public connection: UserData = JSON.parse(localStorage.getItem('connData') as string);
   public messages: {name: string, msg: string}[] = [];
   public input: string = '';
   public keyPair: {publicKey: BigInteger, privateKey: BigInteger};
@@ -29,7 +30,11 @@ export class ChatComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     console.log(this.keyPair)
-    this.http.post('/register-user', {name: this.name, room: this.room}).subscribe(
+    let passWd = null
+    if(this.connection.pass){
+      passWd = CryptoJS.SHA512(this.connection.pass).toString()
+    }
+    this.http.post('/register-user', {user: this.connection.uName, room: this.connection.room, password: passWd}).subscribe(
       data => {
         this.socket.connect();
         this.socket.on('message', (message: any) => {
