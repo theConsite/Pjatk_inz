@@ -12,7 +12,7 @@ import * as CryptoJS from 'crypto-js';
   styleUrl: './chat.component.css'
 })
 export class ChatComponent implements OnInit, OnDestroy {
-  public connection: UserData = JSON.parse(localStorage.getItem('connData') as string);
+  public connection: UserData;
   public messages: {name: string, msg: string}[] = [];
   public input: string = '';
   public keyPair: {publicKey: BigInteger, privateKey: BigInteger};
@@ -26,6 +26,10 @@ export class ChatComponent implements OnInit, OnDestroy {
 
   constructor(private http: HttpClient, private socket: SocketService, private crypto: CryptoService){
     this.keyPair = this.crypto.generateKeyPair();
+    this.connection = JSON.parse(localStorage.getItem('connData') as string);
+    if(this.connection.pass){
+      this.crypto.pass = this.connection.pass;
+    }
   }
 
   ngOnInit(): void {

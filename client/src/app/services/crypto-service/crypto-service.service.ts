@@ -9,6 +9,7 @@ export class CryptoService {
 
   private p: BigInteger;
   private g: BigInteger;
+  public pass: string | null = null;
 
   constructor() {
     // Ustalanie wartości p i g zgodnie z parametrami Diffiego-Hellmana
@@ -37,11 +38,19 @@ export class CryptoService {
   }
 
   encryptMessage(message: string, key: string): string {
-    return CryptoJS.AES.encrypt(message, key).toString();
+    return CryptoJS.AES.encrypt(message, key+this.pass).toString();
   }
 
   decryptMessage(ciphertext: string, key: string): string {
-    const bytes = CryptoJS.AES.decrypt(ciphertext, key);
+    let bytes = CryptoJS.AES.decrypt(ciphertext, key+this.pass);
     return bytes.toString(CryptoJS.enc.Utf8);
+  }
+
+  encryptWithPass(text: string, pass: string){
+
+  }
+
+  decryptWithPass(text: string, pass: string){
+
   }
 }
