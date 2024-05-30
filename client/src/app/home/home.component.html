@@ -1,14 +1,13 @@
 <div id="background"></div>
 <div id="content">
 
-    <div class="card">
-        <input type="text" [(ngModel)]="formData.room" placeholder="Pokój">
-        <input type="text" [(ngModel)]="formData.uName" placeholder="Nazwa użytkownika">
-        <input type="password" [(ngModel)]="formData.pass" placeholder="Hasło(opcjonalne)">
-        <button (click)="fillRandom($event)">Generuj losowe</button>
-        <button (click)="joinChat($event)">Dołącz</button>
+    <div class="card box-shadow">
+        <input type="text" class="box-shadow" [(ngModel)]="formData.room" placeholder="Pokój">
+        <input type="text" class="box-shadow" [(ngModel)]="formData.uName" placeholder="Nazwa użytkownika">
+        <input type="password" class="box-shadow" [(ngModel)]="formData.pass" placeholder="Hasło(opcjonalne)">
+        <div id="form-controls">
+            <button class="box-shadow" (click)="fillRandom($event)">Generuj losowe</button>
+            <button class="box-shadow" (click)="joinChat($event)">Dołącz</button>
+        </div>
     </div>
-    <div class="card"></div>
-    <div class="card"></div>
-
 </div>

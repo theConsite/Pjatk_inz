@@ -1,0 +1,43 @@
+.border-bottom{
+    border-bottom: 2px solid lightgray;
+    width: 100%;
+}
+
+button{
+    width: 40%;
+    cursor: pointer;
+    background-color: mediumseagreen;
+    color: white;
+    border: 3px solid lightgray;
+    height: 40px;
+    font-size: 17px;
+    font-weight: bold;
+    border-radius: 10px;
+    transition: .3s linear;
+}
+
+#content{
+    height: 100vh;
+}
+.card, .down-card {
+    width: 100%;
+    background-color: #fff;
+    border-radius: 10px;
+    display: flex;
+    justify-content: center;
+    margin: 20px 0;
+    flex-wrap: nowrap;
+    padding: 0 5vw;
+    box-sizing: border-box;
+    align-items: center;
+}
+
+.card{
+    min-height: 50px;
+    flex-direction: column;
+}
+
+.down-card {
+    flex-direction: row;
+    min-height: 0;
+}

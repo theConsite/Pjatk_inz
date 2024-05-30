@@ -9,8 +9,6 @@ import { FormsModule } from '@angular/forms';
 import { SocketService } from './services/socket-service/socket.service';
 import { ChatComponent } from './chat/chat.component';
 import { CryptoService } from './services/crypto-service/crypto-service.service';
-import {MatCardModule} from '@angular/material/card';
-import { MatButtonModule } from '@angular/material/button';
 
 
 @NgModule({
@@ -23,10 +21,8 @@ import { MatButtonModule } from '@angular/material/button';
     BrowserModule,
     AppRoutingModule,
     HttpClientModule,
-    FormsModule,
-    MatCardModule,
-    MatButtonModule
-  ],
+    FormsModule
+    ],
   providers: [
     SocketService,
     CryptoService

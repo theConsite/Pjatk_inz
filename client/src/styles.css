@@ -4,3 +4,49 @@ body{
     margin: 0;
     font-family: Roboto;
 }
+
+.box-shadow{
+    -webkit-box-shadow: 6px 6px 0px -3px rgba(66, 68, 90, 0.3);
+    -moz-box-shadow: 6px 6px 0px -3px rgba(66, 68, 90, 0.3);
+    box-shadow: 6px 6px 0 -3px #42445a4d;
+}
+
+input{
+    width: 100%;
+    margin: 20px 0;
+    border: 3px solid lightgray;
+    height: 32px;
+    font-size: 17px;
+    border-radius: 10px;
+}
+
+#background {
+    position: fixed;
+    width: 100vw;
+    height: 100vh;
+    background: linear-gradient(315deg, #8af2ff, #008ca8);
+    top: 0;
+    left: 0;
+    z-index: -1;
+}
+
+#content {
+    display: flex;
+    padding: 0 5px;
+    flex-direction: column;
+    min-height: 100vh;
+    justify-content: center;
+    padding:  0 5vw;
+}
+.cdk-overlay-container{
+    position: fixed;
+    top: 0;
+}
+
+.mdc-snackbar__surface{
+    background-color: darkgrey !important;
+}
+
+.chat-bubble{
+    width: 100%;
+}

@@ -1,4 +1,16 @@
-<h1>{{connection.uName}}: {{ connection.room }}</h1>
-        <p *ngFor="let message of messages">{{message.name}}: {{message.msg}}</p>
-        <input id="text" size="80" placeholder="Enter your message here" [(ngModel)]="input">
-        <button (click)="sendMess($event)">Send</button>
+<div id="background"></div>
+<div id="content">
+        <div class="card box-shadow">
+                <p class="border-bottom">Pokój {{ connection.room }}</p>
+                <div id="chat-window">
+                        <div class="chat-bubble" *ngFor="let message of messages" [ngClass]="message.name == connection.uName ? 'other-party-mess' : 'my-mess'">
+                                <p class="u-name">{{message.name}}</p>
+                                <p class="msg">{{message.msg}}</p>
+                        </div>
+                </div>
+        </div>
+        <div class="down-card box-shadow">
+                <input id="text" size="80" placeholder="Wpisz wiadomość" [(ngModel)]="input">
+                <button (click)="sendMess($event)">Wyślij</button>
+        </div>
+</div>

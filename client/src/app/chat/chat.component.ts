@@ -6,6 +6,7 @@ import { BigInteger } from 'jsbn';
 import { UserData } from '../global-models';
 import * as CryptoJS from 'crypto-js';
 
+
 @Component({
   selector: 'app-chat',
   templateUrl: './chat.component.html',
@@ -33,7 +34,6 @@ export class ChatComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit(): void {
-    console.log(this.keyPair)
     let passWd = null
     if(this.connection.pass){
       passWd = CryptoJS.SHA512(this.connection.pass).toString()
@@ -47,10 +47,8 @@ export class ChatComponent implements OnInit, OnDestroy {
         this.socket.on('status', (message: any) => {
           this.sharedSecret = '';
           this.sendPubKey(this.keyPair.publicKey)
-          this.messages.push({name: 'server', msg: message.msg});
         });
         this.socket.on('key', (message: any) => {
-          console.log(message)
           this.recievePKey(message)
         });
       },err => {
@@ -78,7 +76,6 @@ export class ChatComponent implements OnInit, OnDestroy {
       this.sendPubKey(secret, keyData.i+1)
     }else{
       this.sharedSecret = this.crypto.deriveSharedKey(secret);
-      console.log(this.sharedSecret)
     }
     
   }
@@ -98,10 +95,19 @@ export class ChatComponent implements OnInit, OnDestroy {
       return text;
   }
 
-  sendMess(event: Event){
-    event.preventDefault()
+  sendMess(event: Event | null = null){
+    if(event){
+      event.preventDefault()
+    }
     this.socket.emit('text', this.crypto.encryptMessage(this.input, this.sharedSecret));
     this.input = '';
   }
+
+  @HostListener('document:keydown', ['$event']) onKeydownHandler(event: KeyboardEvent) {
+    if(event.code === "Enter" && !event.ctrlKey && !event.shiftKey && !event.altKey ){
+      event.preventDefault();
+      this.sendMess()
+    }
+}
 
 }
