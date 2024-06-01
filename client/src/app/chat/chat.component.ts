@@ -1,10 +1,11 @@
 import { HttpClient } from '@angular/common/http';
-import { Component, HostListener, OnDestroy, OnInit } from '@angular/core';
+import { ChangeDetectorRef, Component, ElementRef, HostListener, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { SocketService } from '../services/socket-service/socket.service';
 import { CryptoService } from '../services/crypto-service/crypto-service.service';
 import { BigInteger } from 'jsbn';
 import { UserData } from '../global-models';
 import * as CryptoJS from 'crypto-js';
+import { ToastService } from '../commons/toast/toast.service';
 
 
 @Component({
@@ -20,12 +21,14 @@ export class ChatComponent implements OnInit, OnDestroy {
   public sharedSecret: string = '';
   public lastSecret: BigInteger | null = null;
 
+  @ViewChild('messageWindow') messageWindow: HTMLElement | undefined;
+
   @HostListener('window:beforeunload', [ '$event' ])
   beforeUnloadHandler(event: any) {
     this.socket.disconnect()
   }
 
-  constructor(private http: HttpClient, private socket: SocketService, private crypto: CryptoService){
+  constructor(private http: HttpClient, private socket: SocketService, private crypto: CryptoService, private cd: ChangeDetectorRef, private ts: ToastService){
     this.keyPair = this.crypto.generateKeyPair();
     this.connection = JSON.parse(localStorage.getItem('connData') as string);
     if(this.connection.pass){
@@ -42,9 +45,24 @@ export class ChatComponent implements OnInit, OnDestroy {
       data => {
         this.socket.connect();
         this.socket.on('message', (message: any) => {
+          let scrollBottom = false;
+          let win = null
+          if(this.messageWindow){
+            win = (this.messageWindow as any).nativeElement;
+            if(win.scrollHeight - (win.scrollTop + win.clientHeight) < 100 ){
+              scrollBottom = true;
+            }
+          }
+          
           this.messages.push({name: message.name, msg: this.crypto.decryptMessage(message.msg, this.sharedSecret)});
+          this.cd.detectChanges();
+          if(this.messageWindow && scrollBottom){
+            win.scrollTo(0, win.scrollHeight)
+          }
+
         });
         this.socket.on('status', (message: any) => {
+          this.ts.showToast(message.msg)
           this.sharedSecret = '';
           this.sendPubKey(this.keyPair.publicKey)
         });
@@ -52,6 +70,7 @@ export class ChatComponent implements OnInit, OnDestroy {
           this.recievePKey(message)
         });
       },err => {
+        window.location.href = '/?callback=' + err.error.result;
       }
     );
   }

@@ -1,8 +1,3 @@
-.border-bottom{
-    border-bottom: 2px solid lightgray;
-    width: 100%;
-}
-
 button{
     width: 40%;
     cursor: pointer;
@@ -30,6 +25,7 @@ button{
     padding: 0 5vw;
     box-sizing: border-box;
     align-items: center;
+    position: relative;
 }
 
 .card{
@@ -40,4 +36,86 @@ button{
 .down-card {
     flex-direction: row;
     min-height: 0;
+}
+
+.chat-card{
+    height: calc(100vh - 200px)
+}
+#chat-window{
+    height: calc(100% - 75px);
+    width: 100%;
+    border: 3px solid darkgray;
+    border-radius: 15px;
+    overflow-y: scroll;
+}
+.room-name{
+    margin: 0 auto 10px;
+}
+
+.msg{
+    padding: 10px;
+    width: fit-content;
+    margin: 0;
+    color: white;
+}
+
+.my-mess>.msg{
+    background-color: cornflowerblue;
+    border-radius: 10px 10px 0 10px;
+}
+
+.other-party-mess>.msg{
+    background-color: gray;
+    border-radius: 10px 10px 10px 0px;
+}
+.chat-bubble{
+    display: flex;
+    padding: 0 5px;
+    margin: 0;
+    box-sizing: border-box;
+    flex-direction: column;
+    margin-top: 5px;
+}
+.u-name{
+    font-size: 12px;
+    color: darkgray;
+    margin: 3px 0 10px 0;
+}
+
+.chat-bubble.my-mess{
+    align-items: flex-end;
+}
+
+::-webkit-scrollbar {
+  width: 10px;
+  height: 30px;
+}
+::-webkit-scrollbar-button {
+  width: 0px;
+  height: 0px;
+}
+::-webkit-scrollbar-thumb {
+  background: darkgray;
+  border: 0px none rgba(255, 255, 255, 0);
+  border-radius: 15px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: gray;
+}
+::-webkit-scrollbar-thumb:active {
+  background: gray;
+}
+::-webkit-scrollbar-track {
+  background: rgba(255, 255, 255, 0);
+  border: 0px none rgba(255, 255, 255, 0);
+  border-radius: 15px;
+}
+::-webkit-scrollbar-track:hover {
+  background: rgba(255, 255, 255, 0);
+}
+::-webkit-scrollbar-track:active {
+  background: rgba(255, 255, 255, 0);
+}
+::-webkit-scrollbar-corner {
+  background: transparent;
 }

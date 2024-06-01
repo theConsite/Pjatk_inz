@@ -1,11 +1,11 @@
 <div id="background"></div>
 <div id="content">
-        <div class="card box-shadow">
-                <p class="border-bottom">Pokój {{ connection.room }}</p>
-                <div id="chat-window">
-                        <div class="chat-bubble" *ngFor="let message of messages" [ngClass]="message.name == connection.uName ? 'other-party-mess' : 'my-mess'">
-                                <p class="u-name">{{message.name}}</p>
+        <div class="card chat-card box-shadow">
+                <p class="room-name">Pokój {{ connection.room }}</p>
+                <div id="chat-window" #messageWindow>
+                        <div class="chat-bubble" *ngFor="let message of messages" [ngClass]="message.name == connection.uName ? 'my-mess' : 'other-party-mess'">
                                 <p class="msg">{{message.msg}}</p>
+                                <p class="u-name">{{message.name}}</p>
                         </div>
                 </div>
         </div>

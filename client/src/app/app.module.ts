@@ -9,13 +9,15 @@ import { FormsModule } from '@angular/forms';
 import { SocketService } from './services/socket-service/socket.service';
 import { ChatComponent } from './chat/chat.component';
 import { CryptoService } from './services/crypto-service/crypto-service.service';
+import { ToastComponent } from './commons/toast/toast.component';
 
 
 @NgModule({
   declarations: [
     AppComponent,
     ChatComponent,
-    HomeComponent
+    HomeComponent,
+    ToastComponent
   ],
   imports: [
     BrowserModule,

@@ -1,20 +1,30 @@
 import { HttpClient } from '@angular/common/http';
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { v4 as uuidv4 } from 'uuid';
 import * as CryptoJS from 'crypto-js';
 import { UserData } from '../global-models';
+import { ToastService } from '../commons/toast/toast.service';
+import { ActivatedRoute } from '@angular/router';
+import { Observable, switchMap } from 'rxjs';
 
 @Component({
   selector: 'app-home',
   templateUrl: './home.component.html',
   styleUrl: './home.component.css'
 })
-export class HomeComponent {
+export class HomeComponent implements OnInit {
 
-  constructor(private http: HttpClient){
+  constructor(private http: HttpClient, private ts: ToastService, private ac: ActivatedRoute){
 
   }
   public formData: UserData = new UserData();
+
+  ngOnInit(): void {
+    const callb = this.ac.snapshot.queryParamMap.get('callback')
+    if(callb){
+      this.ts.showToast(callb)
+    }
+  }
 
   joinChat(event: Event){
     event.preventDefault()
@@ -28,7 +38,7 @@ export class HomeComponent {
         window.location.href = '/chat'
       },
       err =>{
-        console.log(err)
+        this.ts.showToast(err.error.result);
       }
     )
   }
