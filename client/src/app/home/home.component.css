@@ -1,3 +1,13 @@
+@media (max-width: 463px) {
+    #form-controls>button{
+        height: 50px;
+    }
+  }
+  @media (min-width: 464px) {
+    #form-controls>button{
+        height: 32px;
+    }
+  }
 .card {
     width: 100%;
     background-color: white;
@@ -34,7 +44,6 @@
     background-color: cornflowerblue;
     color: white;
     border: 3px solid lightgray;
-    height: 32px;
     font-size: 17px;
     font-weight: bold;
     border-radius: 10px;

@@ -12,7 +12,6 @@ export class CryptoService {
   public pass: string | null = null;
 
   constructor() {
-    // Ustalanie wartości p i g zgodnie z parametrami Diffiego-Hellmana
     this.p = new BigInteger('FFFFFFFFFFFFFFFFC90FDAA22168C234C4C6628B80DC1CD129024E08' +
       '8A67CC74020BBEA63B139B22514A08798E3404DDEF9519B3CD3A431B302B0A6DF25F14374FE1356D6D51C245E485B576625E7EC6F44C42E9A637ED6B0BFF5CB6F406B7ED' +
       'EE386BFB5A899FA5AE9F24117C4B1FE649286651ECE65381FFFFFFFFFFFFFFFF', 16);
@@ -27,7 +26,6 @@ export class CryptoService {
   }
 
   deriveSharedKey(secret: BigInteger): string {
-    // Concatenate the secrets and hash them to derive the shared key
     return CryptoJS.SHA256(secret.toString(16)).toString();
   }
 
@@ -44,13 +42,5 @@ export class CryptoService {
   decryptMessage(ciphertext: string, key: string): string {
     let bytes = CryptoJS.AES.decrypt(ciphertext, key+this.pass);
     return bytes.toString(CryptoJS.enc.Utf8);
-  }
-
-  encryptWithPass(text: string, pass: string){
-
-  }
-
-  decryptWithPass(text: string, pass: string){
-
   }
 }
